@@ -1,1 +1,1 @@
-Creating a Project Management System
+Creating a Full Stack Project Management System
