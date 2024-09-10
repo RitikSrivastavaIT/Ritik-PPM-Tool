@@ -28,10 +28,21 @@ public class ProjectService {
 
         Project project = projectReopsitory.findByProjectIdentifier(projectId.toUpperCase());
         if(project == null){
-            throw new ProjectIdException("Project ID '"+projectId+"' does not exists");
+            throw new ProjectIdException("Project ID '"+projectId.toUpperCase()+"' does not exists");
         }
 
         return project;
+    }
+    public Iterable<Project> findAllProject(){
+        return projectReopsitory.findAll();
+    }
+
+    public void deleteProjectByIdentifier(String projectId){
+        Project project = projectReopsitory.findByProjectIdentifier(projectId);
+        if(project == null){
+            throw new ProjectIdException("Cannot Delete Project with ID '"+projectId.toUpperCase()+"'. This project does not exist.");
+        }
+        projectReopsitory.delete(project);
     }
 
 
