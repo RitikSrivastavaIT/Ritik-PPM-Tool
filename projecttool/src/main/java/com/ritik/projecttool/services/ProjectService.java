@@ -42,6 +42,4 @@ public class ProjectService {
         Project project = findProjectByIdentifier(projectId.toUpperCase());
         projectReopsitory.delete(project);
     }
-
-
 }
