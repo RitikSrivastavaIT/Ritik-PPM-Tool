@@ -2,6 +2,7 @@ package com.ritik.projecttool.services;
 
 import com.ritik.projecttool.domain.Project;
 import com.ritik.projecttool.exceptions.ProjectIdException;
+import com.ritik.projecttool.exceptions.ProjectIdExceptionResponse;
 import com.ritik.projecttool.repositories.ProjectReopsitory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,19 @@ public class ProjectService {
 
         Project project = projectReopsitory.findByProjectIdentifier(projectId.toUpperCase());
         if(project == null){
-            throw new ProjectIdException("Project ID '"+projectId+"' does not exists");
+            throw new ProjectIdException("Project with ID '"+projectId.toUpperCase()+"' does not exists");
         }
 
         return project;
+    }
+
+    public Iterable<Project> findAllProjects(){
+        return projectReopsitory.findAll();
+    }
+
+    public void deleteProjectByIdentifier(String projectId){
+        Project project = findProjectByIdentifier(projectId);
+        projectReopsitory.delete(project);
     }
 
 
