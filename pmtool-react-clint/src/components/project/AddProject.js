@@ -1,23 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { createProject } from "../../actions/ProjectActions";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 
-const AddProject = () => {
+const AddProject = ({ errors }) => {
   const [projectData, setProjectData] = useState({
     projectName: "",
     projectIdentifier: "",
     description: "",
     start_date: "",
     end_date: "",
+    errors: {},
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // this.onChange = this.onChange.bind(this);
   // this.onSubmit = this.onSubmit.bind(this);
+  useEffect(() => {
+    if (errors) {
+      setProjectData((prevData) => ({
+        ...prevData,
+        errors: errors,
+      }));
+    }
+  }, [errors]);
+  //   if (errors) {
+  //     setProjectData((prevData) => ({
+  //       ...prevData,
+  //       errors: errors,
+  //     }));
+  //   }
+  // }, [errors]);
+
   const onChange = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
   };
@@ -30,6 +47,7 @@ const AddProject = () => {
       description: projectData.description,
       start_date: projectData.start_date,
       end_date: projectData.end_date,
+      errors: projectData.errors,
     };
     const success = await dispatch(createProject(newProject));
     if (success) {
@@ -55,6 +73,7 @@ const AddProject = () => {
                     value={projectData.projectName}
                     onChange={onChange}
                   />
+                  <p>{errors.projectName}</p>
                 </div>
                 <div className="form-group">
                   <input
@@ -65,6 +84,7 @@ const AddProject = () => {
                     value={projectData.projectIdentifier}
                     onChange={onChange}
                   />
+                  <p>{errors.projectIdentifier}</p>
                 </div>
                 <div className="form-group">
                   <textarea
@@ -74,6 +94,7 @@ const AddProject = () => {
                     value={projectData.description}
                     onChange={onChange}
                   ></textarea>
+                  <p>{errors.description}</p>
                 </div>
                 <h6>Start Date</h6>
                 <div className="form-group">
@@ -110,5 +131,10 @@ const AddProject = () => {
 };
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
-export default connect(null, { createProject })(AddProject);
+const mapStateToProps = (state) => ({
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, { createProject })(AddProject);
