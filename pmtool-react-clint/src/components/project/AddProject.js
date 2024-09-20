@@ -17,9 +17,6 @@ const AddProject = ({ errors }) => {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // this.onChange = this.onChange.bind(this);
-  // this.onSubmit = this.onSubmit.bind(this);
   useEffect(() => {
     if (errors) {
       setProjectData((prevData) => ({
@@ -28,13 +25,6 @@ const AddProject = ({ errors }) => {
       }));
     }
   }, [errors]);
-  //   if (errors) {
-  //     setProjectData((prevData) => ({
-  //       ...prevData,
-  //       errors: errors,
-  //     }));
-  //   }
-  // }, [errors]);
 
   const onChange = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });

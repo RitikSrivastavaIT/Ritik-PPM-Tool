@@ -1,10 +1,14 @@
 import axios from "axios";
-import { GET_ERRORS, GET_PROJECTS } from "./types";
-import { type } from "@testing-library/user-event/dist/type";
+import { GET_ERRORS, GET_PROJECT, GET_PROJECTS } from "./types";
+import { useNavigate } from "react-router-dom";
 
 export const createProject = (project) => async (dispatch) => {
   try {
     await axios.post("http://localhost:8080/api/project", project);
+    dispatch({
+      type: GET_ERRORS,
+      payload: {},
+    });
     return true;
   } catch (err) {
     if (err.response) {
@@ -13,7 +17,6 @@ export const createProject = (project) => async (dispatch) => {
         payload: err.response.data,
       });
     } else {
-      console.error("Error:", err.message);
       dispatch({
         type: GET_ERRORS,
         payload: {
@@ -31,4 +34,15 @@ export const getProjects = () => async (dispatch) => {
     type: GET_PROJECTS,
     payload: res.data,
   });
+};
+export const getProject = (id, navigate) => async (dispatch) => {
+  try {
+    const res = await axios.get(`http://localhost:8080/api/project/${id}`);
+    dispatch({
+      type: GET_PROJECT,
+      payload: res.data,
+    });
+  } catch (error) {
+    navigate("/dashboard");
+  }
 };
